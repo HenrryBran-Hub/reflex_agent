@@ -2,6 +2,8 @@
 // Copyright (c) 2020 Luis Espino
 
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("Script loaded");
+
     function reflex_agent(location, state) {
         if (state == "DIRTY") return "CLEAN";
         else if (location == "A") return "RIGHT";
@@ -17,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var currentState = location + " " + state + " " + (location == "A" ? states[2] : states[1]);
         
         // Mostrar estado en el log
-        document.getElementById("log").innerHTML += "<br>Location: " + location + " | Action: " + action_result;
+        document.getElementById("log").textContent += "\nLocation: " + location + " | Action: " + action_result;
 
         // Agregar estado a la lista de estados visitados
         if (!visitedStates.includes(currentState)) {
@@ -26,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Verificar si se han visitado todos los estados
         if (visitedStates.length >= 8) {
-            document.getElementById("log").innerHTML += "<br>All states visited!";
+            document.getElementById("log").textContent += "\nAll states visited!";
             return;
         }
 
@@ -43,10 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Inicializar los estados y la lista de estados visitados
     var states = ["A", "DIRTY", "DIRTY"];
-    var visitedStates = [
-        "A DIRTY DIRTY", "A CLEAN DIRTY", "A CLEAN B DIRTY", "A CLEAN B CLEAN",
-        "A DIRTY B CLEAN", "A DIRTY B DIRTY", "B DIRTY DIRTY", "B CLEAN DIRTY"
-    ];
+    var visitedStates = [];
 
     console.log("Starting test...");
     test(states, visitedStates);
