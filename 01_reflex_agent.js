@@ -1,61 +1,67 @@
 // MIT License
 // Copyright (c) 2020 Luis Espino
 
-function reflex_agent(location, state) {
-    if (state == "DIRTY") return "CLEAN";
-    else if (location == "A") return "RIGHT";
-    else if (location == "B") return "LEFT";
-}
-
-function dirtyRooms(states) {
-    // Ensuciar ambos cuartos
-    states[1] = "DIRTY";
-    states[2] = "DIRTY";
-}
-
-function test(states, visitedStates) {
-    var location = states[0];
-    var state = states[0] == "A" ? states[1] : states[2];
-    var action_result = reflex_agent(location, state);
-
-    // Formatear el estado actual
-    var currentState = location + " " + state + " " + (location == "A" ? states[2] : states[1]);
-
-    // Mostrar estado en el log
-    document.getElementById("log").innerHTML += "<br>Location: " + location + " | Action: " + action_result;
-
-    // Agregar estado a la lista de estados visitados
-    if (!visitedStates.includes(currentState)) {
-        visitedStates.push(currentState);
+document.addEventListener("DOMContentLoaded", function() {
+    function reflex_agent(location, state) {
+        if (state == "DIRTY") return "CLEAN";
+        else if (location == "A") return "RIGHT";
+        else if (location == "B") return "LEFT";
     }
 
-    // Verificar si se han visitado todos los estados
-    if (visitedStates.length >= 8) {
-        document.getElementById("log").innerHTML += "<br>All states visited!";
-        return;
+    function dirtyRooms(states) {
+        // Ensuciar ambos cuartos
+        states[1] = "DIRTY";
+        states[2] = "DIRTY";
     }
 
-    // Realizar la acción y actualizar el estado
-    if (action_result == "CLEAN") {
-        if (location == "A") states[1] = "CLEAN";
-        else if (location == "B") states[2] = "CLEAN";
+    function test(states, visitedStates) {
+        var location = states[0];
+        var state = states[0] == "A" ? states[1] : states[2];
+        var action_result = reflex_agent(location, state);
 
-        // Ensuciar ambos cuartos si ambos están limpios
+        // Formatear el estado actual
+        var currentState = location + " " + state + " " + (location == "A" ? states[2] : states[1]);
+
+        // Mostrar estado en el log
+        document.getElementById("log").innerHTML += "<br>Location: " + location + " | State A: " + states[1] + " | State B: " + states[2] + " | Action: " + action_result;
+
+        // Agregar estado a la lista de estados visitados
+        if (!visitedStates.includes(currentState)) {
+            visitedStates.push(currentState);
+        }
+
+        // Verificar si se han visitado todos los estados
+        if (visitedStates.length >= 8) {
+            document.getElementById("log").innerHTML += "<br>All states visited!";
+            return;
+        }
+
+        // Realizar la acción y actualizar el estado
+        if (action_result == "CLEAN") {
+            if (location == "A") states[1] = "CLEAN";
+            else if (location == "B") states[2] = "CLEAN";
+        } else if (action_result == "RIGHT") states[0] = "B";
+        else if (action_result == "LEFT") states[0] = "A";
+
+        // Verificar si ambos cuartos están limpios y ensuciarlos si es necesario
         if (states[1] === "CLEAN" && states[2] === "CLEAN") {
             dirtyRooms(states);
         }
-    } else if (action_result == "RIGHT") states[0] = "B";
-    else if (action_result == "LEFT") states[0] = "A";
 
-    // Continuar con la siguiente iteración después de un retraso
-    setTimeout(function() { test(states, visitedStates); }, 2000);
-}
+        // Continuar con la siguiente iteración después de un retraso
+        setTimeout(function() { test(states, visitedStates); }, 2000);
+    }
 
-// Inicializar los estados y la lista de estados visitados
-var states = ["A", "DIRTY", "DIRTY"];
-var visitedStates = [
-    "A DIRTY DIRTY", "A CLEAN DIRTY", "A CLEAN B DIRTY", "A CLEAN B CLEAN",
-    "A DIRTY B CLEAN", "A DIRTY B DIRTY", "B DIRTY DIRTY", "B CLEAN DIRTY"
-];
+    // Inicializar los estados y la lista de estados visitados
+    var states = ["A", "DIRTY", "DIRTY"];
+    var visitedStates = [];
 
-test(states, visitedStates);
+    // Agregar todos los estados posibles a la lista de estados visitados
+    var allStates = [
+        "A DIRTY DIRTY", "A CLEAN DIRTY", "A CLEAN B DIRTY", "A CLEAN B CLEAN",
+        "A DIRTY B CLEAN", "A DIRTY B DIRTY", "B DIRTY DIRTY", "B CLEAN DIRTY"
+    ];
+
+    // Iniciar la prueba
+    test(states, visitedStates);
+});
