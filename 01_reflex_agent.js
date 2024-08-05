@@ -10,6 +10,18 @@ document.addEventListener("DOMContentLoaded", function() {
         else if (location == "B") return "LEFT";
     }
 
+    function randomDirty(states) {
+        if (states[1] === "CLEAN" && states[2] === "CLEAN") {
+            if (Math.random() < 0.5) {
+                states[1] = "DIRTY";
+                document.getElementById("log").textContent += "Room A got dirty randomly!\n";
+            } else {
+                states[2] = "DIRTY";
+                document.getElementById("log").textContent += "Room B got dirty randomly!\n";
+            }
+        }
+    }
+
     function test(states, visitedStates) {
         var location = states[0];
         var stateA = states[1];
@@ -29,9 +41,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Verificar si se han visitado todos los estados
         if (visitedStates.length >= 8) {
-            document.getElementById("log").textContent += "All states visited!\n";
+            document.getElementById("log").textContent += "All 8 different states visited!\n";
             document.getElementById("log").textContent += "Visited states: " + visitedStates.join(", ") + "\n";
-            return;
+            document.getElementById("log").textContent += "Terminating the program.\n";
+            return; // Termina la ejecución
         }
 
         // Realizar la acción y actualizar el estado
@@ -40,6 +53,9 @@ document.addEventListener("DOMContentLoaded", function() {
             else if (location == "B") states[2] = "CLEAN";
         } else if (action_result == "RIGHT") states[0] = "B";
         else if (action_result == "LEFT") states[0] = "A";
+
+        // Aplicar ensuciado aleatorio
+        randomDirty(states);
 
         // Continuar con la siguiente iteración después de un retraso
         setTimeout(function() { test(states, visitedStates); }, 2000);
