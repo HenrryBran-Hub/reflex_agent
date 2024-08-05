@@ -12,23 +12,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function test(states, visitedStates) {
         var location = states[0];
-        var state = states[0] == "A" ? states[1] : states[2];
-        var action_result = reflex_agent(location, state);
+        var stateA = states[1];
+        var stateB = states[2];
+        var action_result = reflex_agent(location, location == "A" ? stateA : stateB);
 
         // Formatear el estado actual
-        var currentState = location + " " + state + " " + (location == "A" ? states[2] : states[1]);
+        var currentState = location + " " + stateA + " " + stateB;
         
         // Mostrar estado en el log
-        document.getElementById("log").textContent += "\nLocation: " + location + " | Action: " + action_result;
+        document.getElementById("log").textContent += "Location: " + location + " | State A: " + stateA + " | State B: " + stateB + " | Action: " + action_result + "\n";
 
-        // Agregar estado a la lista de estados visitados
+        // Agregar estado a la lista de estados visitados si es nuevo
         if (!visitedStates.includes(currentState)) {
             visitedStates.push(currentState);
         }
 
         // Verificar si se han visitado todos los estados
         if (visitedStates.length >= 8) {
-            document.getElementById("log").textContent += "\nAll states visited!";
+            document.getElementById("log").textContent += "All states visited!\n";
+            document.getElementById("log").textContent += "Visited states: " + visitedStates.join(", ") + "\n";
             return;
         }
 
