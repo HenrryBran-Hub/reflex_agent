@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Verificar si ambos cuartos están limpios y ensuciarlos si es necesario
         if (states[1] === "CLEAN" && states[2] === "CLEAN") {
+            document.getElementById("log").innerHTML += "<br>Both rooms are CLEAN. Dirtying them now.";
             dirtyRooms(states);
         }
 
@@ -55,12 +56,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Inicializar los estados y la lista de estados visitados
     var states = ["A", "DIRTY", "DIRTY"];
     var visitedStates = [];
-
-    // Agregar todos los estados posibles a la lista de estados visitados
-    var allStates = [
-        "A DIRTY DIRTY", "A CLEAN DIRTY", "A CLEAN B DIRTY", "A CLEAN B CLEAN",
-        "A DIRTY B CLEAN", "A DIRTY B DIRTY", "B DIRTY DIRTY", "B CLEAN DIRTY"
-    ];
 
     // Iniciar la prueba
     test(states, visitedStates);
